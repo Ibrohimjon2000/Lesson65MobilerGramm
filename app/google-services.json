@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1094037213689",
+    "project_id": "lesson65-2101e",
+    "storage_bucket": "lesson65-2101e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1094037213689:android:176ba127aae61b2d3bad28",
+        "android_client_info": {
+          "package_name": "uz.mobiler.lesson65"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1094037213689-p0c11tjsar4nsn5ucvhp4bfem5omhjdi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmpOIaqvai5f-ImCZBvcNoXJF07xDS7n8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1094037213689-p0c11tjsar4nsn5ucvhp4bfem5omhjdi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Mobiler Gramm</string>
+    <string name="client_id">1094037213689-m8q1e7c3i4a00pqji5gm1dcfhg03mjdq.apps.googleusercontent.com</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
