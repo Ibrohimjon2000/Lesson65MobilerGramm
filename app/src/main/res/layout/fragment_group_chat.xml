@@ -49,13 +49,16 @@
 
         <TextView
             android:id="@+id/name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:maxLines="1"
             android:text="@string/app_name"
             android:textColor="@color/white"
             android:textSize="17sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/conteyner"
+            app:layout_constraintRight_toLeftOf="@+id/info"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
