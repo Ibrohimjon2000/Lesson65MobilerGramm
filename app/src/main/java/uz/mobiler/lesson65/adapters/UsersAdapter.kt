@@ -65,10 +65,10 @@ class UsersAdapter(
 
                                 if (messageList[messageList.size - 1].fromUserUid.toString() == account?.uid) {
                                     message.text =
-                                        account.displayName + " " + messageList[messageList.size - 1].text.toString()
+                                         "you: " + messageList[messageList.size - 1].text.toString()
                                 } else if (messageList[messageList.size - 1].fromUserUid.toString() == user.uid) {
                                     message.text =
-                                        user.displayName + " " + messageList[messageList.size - 1].text.toString()
+                                        user.displayName + ": " + messageList[messageList.size - 1].text.toString()
                                 }
                                 date.text = messageList[messageList.size - 1].date.toString()
                             } else {

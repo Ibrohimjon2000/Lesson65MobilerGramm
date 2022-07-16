@@ -141,4 +141,9 @@ class ChatFragment : Fragment() {
                 }
             }
     }
+
+    override fun onStart() {
+        super.onStart()
+        reference.child(param2?.uid.toString()).child("online").setValue(true)
+    }
 }

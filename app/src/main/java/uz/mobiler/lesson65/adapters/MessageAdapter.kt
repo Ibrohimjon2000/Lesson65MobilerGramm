@@ -11,6 +11,7 @@ import com.google.firebase.database.FirebaseDatabase
 import uz.mobiler.lesson65.R
 import uz.mobiler.lesson65.databinding.ItemFromBinding
 import uz.mobiler.lesson65.databinding.ItemToBinding
+import uz.mobiler.lesson65.databinding.ItemToChatBinding
 import uz.mobiler.lesson65.model.Message
 import uz.mobiler.lesson65.model.User
 
@@ -27,10 +28,10 @@ class MessageAdapter(
     private val TO = 0
     private val FROM = 1
 
-    inner class ToVh(val itemToBinding: ItemToBinding) :
-        RecyclerView.ViewHolder(itemToBinding.root) {
+    inner class ToVh(val itemToChatBinding: ItemToChatBinding) :
+        RecyclerView.ViewHolder(itemToChatBinding.root) {
         fun onBind(message: Message) {
-            itemToBinding.apply {
+            itemToChatBinding.apply {
                 firebaseDatabase = FirebaseDatabase.getInstance()
                 reference = firebaseDatabase.getReference("users")
                 val m = Message(
@@ -47,15 +48,6 @@ class MessageAdapter(
                     .child(message.key ?: "").setValue(m)
                 userMsg.text = message.text
                 date.text = message.date
-                Glide.with(context)
-                    .load(user.photoUrl)
-                    .apply(RequestOptions().placeholder(R.drawable.profile).centerCrop())
-                    .into(img)
-                if (user.isOnline == true) {
-                    isOnline.setImageResource(R.drawable.online)
-                } else {
-                    isOnline.setImageResource(R.drawable.oflinee)
-                }
             }
         }
     }
@@ -71,22 +63,13 @@ class MessageAdapter(
                 }
                 userMsg.text = message.text
                 date.text = message.date
-                Glide.with(context)
-                    .load(account.photoUrl)
-                    .apply(RequestOptions().placeholder(R.drawable.profile).centerCrop())
-                    .into(img)
-                if (account.isOnline == true) {
-                    isOnline.setImageResource(R.drawable.online)
-                } else {
-                    isOnline.setImageResource(R.drawable.oflinee)
-                }
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == 0) {
-            return ToVh(ItemToBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            return ToVh(ItemToChatBinding.inflate(LayoutInflater.from(parent.context), parent, false))
         } else {
             return FromVh(
                 ItemFromBinding.inflate(

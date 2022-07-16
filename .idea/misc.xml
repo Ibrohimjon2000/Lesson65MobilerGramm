@@ -30,6 +30,7 @@
         <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/layout/activity_splash.xml" value="0.22" />
         <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/layout/add_group_dialog.xml" value="0.25" />
         <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/layout/custom_tab.xml" value="0.2" />
+        <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/layout/empty.xml" value="0.19895833333333332" />
         <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/layout/fragment_chat.xml" value="0.25" />
         <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/layout/fragment_group_chat.xml" value="0.25" />
         <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/layout/fragment_message.xml" value="0.22" />
@@ -38,6 +39,7 @@
         <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/layout/item_from.xml" value="0.5" />
         <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/layout/item_group.xml" value="0.33" />
         <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/layout/item_to.xml" value="0.5" />
+        <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/layout/item_to_chat.xml" value="0.33" />
         <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/layout/item_user.xml" value="0.33" />
       </map>
     </option>

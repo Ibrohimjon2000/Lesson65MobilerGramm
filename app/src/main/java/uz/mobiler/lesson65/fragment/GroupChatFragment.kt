@@ -141,4 +141,9 @@ class GroupChatFragment : Fragment() {
         val simpleDateFormat = SimpleDateFormat("HH:mm")
         return simpleDateFormat.format(date)
     }
+
+    override fun onStart() {
+        super.onStart()
+        reference.child(param2?.uid.toString()).child("online").setValue(true)
+    }
 }

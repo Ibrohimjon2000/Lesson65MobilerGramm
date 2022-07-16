@@ -107,27 +107,27 @@
         app:stackFromEnd="true" />
 
     <LinearLayout
-        android:orientation="horizontal"
         android:id="@+id/bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#152C3F"
+        android:orientation="horizontal"
         android:padding="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <EditText
-            android:layout_weight="1"
             android:id="@+id/edt_msg"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
+            android:layout_weight="1"
             android:background="@drawable/edit_background"
             android:hint="Enter your message"
             android:padding="8dp"
             android:textColor="@color/white"
-            android:textColorHint="@color/white"/>
+            android:textColorHint="@color/white" />
 
         <ImageView
             android:id="@+id/send_btn"
@@ -136,7 +136,7 @@
             android:layout_gravity="bottom"
             android:layout_margin="8dp"
             android:clickable="true"
-            android:src="@drawable/ic_baseline_send_24"/>
+            android:src="@drawable/ic_baseline_send_24" />
 
     </LinearLayout>
 

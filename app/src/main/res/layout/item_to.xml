@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:paddingBottom="5dp"
     android:layout_height="wrap_content">
 
     <LinearLayout
@@ -10,7 +11,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:layout_marginBottom="5dp"
         android:background="@drawable/to_background"
         android:padding="10dp"
         app:cardCornerRadius="8dp"

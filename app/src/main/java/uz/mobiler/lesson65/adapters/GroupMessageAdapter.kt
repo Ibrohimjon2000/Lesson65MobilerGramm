@@ -72,15 +72,6 @@ class GroupMessageAdapter(
                 }
                 userMsg.text = groupMessage.text
                 date.text = groupMessage.date
-                Glide.with(context)
-                    .load(account.photoUrl)
-                    .apply(RequestOptions().placeholder(R.drawable.profile).centerCrop())
-                    .into(img)
-                if (account.isOnline == true) {
-                    isOnline.setImageResource(R.drawable.online)
-                } else {
-                    isOnline.setImageResource(R.drawable.oflinee)
-                }
             }
         }
     }
