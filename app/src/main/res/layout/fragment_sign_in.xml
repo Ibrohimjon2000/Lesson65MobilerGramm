@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:background="@color/white"
+    android:background="#803D91D5"
     tools:context=".fragment.SignInFragment">
 
     <com.google.android.gms.common.SignInButton

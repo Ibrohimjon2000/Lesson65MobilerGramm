@@ -108,6 +108,15 @@
             android:textColorHint="@color/white" />
 
         <ImageView
+            android:id="@+id/send_profile"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="bottom"
+            android:layout_margin="8dp"
+            android:clickable="true"
+            android:src="@drawable/ic_file" />
+
+        <ImageView
             android:id="@+id/send_btn"
             android:layout_width="30dp"
             android:layout_height="30dp"

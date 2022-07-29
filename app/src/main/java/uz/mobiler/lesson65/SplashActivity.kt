@@ -1,11 +1,11 @@
 package uz.mobiler.lesson65
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.appcompat.app.AppCompatActivity
 import uz.mobiler.lesson65.databinding.ActivitySplashBinding
 
 class SplashActivity : AppCompatActivity() {

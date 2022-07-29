@@ -22,6 +22,7 @@ class GroupsAdapter(
     private lateinit var firebaseDatabase: FirebaseDatabase
     private lateinit var reference: DatabaseReference
     private lateinit var messageList: ArrayList<GroupMessage>
+    private var count = 0
 
     inner class Vh(val itemGroupBinding: ItemGroupBinding) :
         RecyclerView.ViewHolder(itemGroupBinding.root) {
@@ -56,19 +57,43 @@ class GroupsAdapter(
                                     }
                                 } else {
                                     if (messageList[messageList.size - 1].isChecked == false) {
-                                        isCheck.visibility = View.VISIBLE
-                                        isCheck.setImageResource(R.drawable.online)
+                                        counter.visibility = View.VISIBLE
+                                        count = 0
+                                        messageList.forEach {
+                                            if (it.isChecked == false) {
+                                                count++
+                                            }
+                                        }
+                                        numberCount.text = count.toString()
                                     } else {
                                         isCheck.visibility = View.INVISIBLE
                                     }
                                 }
 
                                 if (messageList[messageList.size - 1].user?.uid.toString() == account?.uid) {
-                                    message.text =
-                                        account.displayName + " " + messageList[messageList.size - 1].text.toString()
+                                    if (messageList[messageList.size - 1].text.toString()
+                                            .isNotEmpty()
+                                    ) {
+                                        message.text =
+                                            "you: " + messageList[messageList.size - 1].text.toString()
+                                    } else if (messageList[messageList.size - 1].imageUrl.toString()
+                                            .isNotEmpty()
+                                    ) {
+                                        message.text =
+                                            "you: photo"
+                                    }
                                 } else {
-                                    message.text =
-                                        messageList[messageList.size - 1].user?.displayName + " " + messageList[messageList.size - 1].text.toString()
+                                    if (messageList[messageList.size - 1].text.toString()
+                                            .isNotEmpty()
+                                    ) {
+                                        message.text =
+                                            messageList[messageList.size - 1].user?.displayName + ": " + messageList[messageList.size - 1].text.toString()
+                                    } else if (messageList[messageList.size - 1].imageUrl.toString()
+                                            .isNotEmpty()
+                                    ) {
+                                        message.text =
+                                            messageList[messageList.size - 1].user?.displayName + ": photo"
+                                    }
                                 }
                                 date.text = messageList[messageList.size - 1].date.toString()
                             } else {

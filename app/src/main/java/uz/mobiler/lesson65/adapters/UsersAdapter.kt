@@ -4,8 +4,6 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -24,6 +22,7 @@ class UsersAdapter(
     private lateinit var firebaseDatabase: FirebaseDatabase
     private lateinit var reference: DatabaseReference
     private lateinit var messageList: ArrayList<Message>
+    private var count = 0
 
     inner class Vh(val itemUserBinding: ItemUserBinding) :
         RecyclerView.ViewHolder(itemUserBinding.root) {
@@ -56,19 +55,43 @@ class UsersAdapter(
                                     }
                                 } else {
                                     if (messageList[messageList.size - 1].isChecked == false) {
-                                        isCheck.visibility = View.VISIBLE
-                                        isCheck.setImageResource(R.drawable.online)
+                                        counter.visibility = View.VISIBLE
+                                        count = 0
+                                        messageList.forEach {
+                                            if (it.isChecked == false) {
+                                                count++
+                                            }
+                                        }
+                                        numberCount.text = count.toString()
                                     } else {
                                         isCheck.visibility = View.INVISIBLE
                                     }
                                 }
 
                                 if (messageList[messageList.size - 1].fromUserUid.toString() == account?.uid) {
-                                    message.text =
-                                         "you: " + messageList[messageList.size - 1].text.toString()
+                                    if (messageList[messageList.size - 1].text.toString()
+                                            .isNotEmpty()
+                                    ) {
+                                        message.text =
+                                            "you: " + messageList[messageList.size - 1].text.toString()
+                                    } else if (messageList[messageList.size - 1].imageUrl.toString()
+                                            .isNotEmpty()
+                                    ) {
+                                        message.text =
+                                            "you: photo"
+                                    }
                                 } else if (messageList[messageList.size - 1].fromUserUid.toString() == user.uid) {
-                                    message.text =
-                                        user.displayName + ": " + messageList[messageList.size - 1].text.toString()
+                                    if (messageList[messageList.size - 1].text.toString()
+                                            .isNotEmpty()
+                                    ) {
+                                        message.text =
+                                            user.displayName + ": " + messageList[messageList.size - 1].text.toString()
+                                    } else if (messageList[messageList.size - 1].imageUrl.toString()
+                                            .isNotEmpty()
+                                    ) {
+                                        message.text =
+                                            user.displayName + ": photo"
+                                    }
                                 }
                                 date.text = messageList[messageList.size - 1].date.toString()
                             } else {

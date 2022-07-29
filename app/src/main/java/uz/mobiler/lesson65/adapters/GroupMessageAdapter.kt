@@ -2,8 +2,8 @@ package uz.mobiler.lesson65.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -14,16 +14,15 @@ import uz.mobiler.lesson65.databinding.ItemFromBinding
 import uz.mobiler.lesson65.databinding.ItemToBinding
 import uz.mobiler.lesson65.model.Group
 import uz.mobiler.lesson65.model.GroupMessage
-import uz.mobiler.lesson65.model.Message
 import uz.mobiler.lesson65.model.User
 
 class GroupMessageAdapter(
     val context: Context,
     val list: List<GroupMessage>,
     val account: User,
-    val group: Group?
-) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    val group: Group?,
+    val onItemClickListener: (message: GroupMessage) -> Unit
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private lateinit var firebaseDatabase: FirebaseDatabase
     private lateinit var reference: DatabaseReference
@@ -41,22 +40,39 @@ class GroupMessageAdapter(
                     groupMessage.user,
                     groupMessage.date,
                     true,
-                    groupMessage.key
+                    groupMessage.key,
+                    groupMessage.imageUrl
                 )
                 reference.child(group?.groupKey ?: "").child("message")
                     .child(groupMessage.key ?: "")
                     .setValue(m)
-                userMsg.text = groupMessage.text
-                date.text = groupMessage.date
+
+                if (groupMessage.text.toString().isNotEmpty()) {
+                    imageDate.visibility = View.GONE
+                    sendImg.visibility = View.GONE
+                    liner.visibility = View.VISIBLE
+                    date.visibility = View.VISIBLE
+                    userMsg.text = groupMessage.text
+                    date.text = groupMessage.date
+                } else if (groupMessage.imageUrl.toString().isNotEmpty()) {
+                    imageDate.visibility = View.VISIBLE
+                    sendImg.visibility = View.VISIBLE
+                    liner.visibility = View.GONE
+                    date.visibility = View.GONE
+                    Glide.with(context)
+                        .load(groupMessage.imageUrl)
+                        .apply(RequestOptions().placeholder(R.drawable.profile).centerCrop())
+                        .into(sendImg)
+                    imageDate.text = groupMessage.date
+                }
+
                 Glide.with(context)
                     .load(groupMessage.user?.photoUrl)
                     .apply(RequestOptions().placeholder(R.drawable.profile).centerCrop())
                     .into(img)
-                if (groupMessage.user?.isOnline == true) {
-                    isOnline.setImageResource(R.drawable.online)
-                } else {
-                    isOnline.setImageResource(R.drawable.oflinee)
-                }
+            }
+            itemView.setOnClickListener {
+                onItemClickListener.invoke(groupMessage)
             }
         }
     }
@@ -65,13 +81,41 @@ class GroupMessageAdapter(
         RecyclerView.ViewHolder(itemFromBinding.root) {
         fun onBind(groupMessage: GroupMessage) {
             itemFromBinding.apply {
-                if (groupMessage.isChecked == true) {
-                    isCheck.setImageResource(R.drawable.ic_check2)
-                } else {
-                    isCheck.setImageResource(R.drawable.ic_check1)
+                if (groupMessage.text.toString().isNotEmpty()) {
+                    if (groupMessage.isChecked == true) {
+                        isCheck.setImageResource(R.drawable.ic_check2)
+                    } else {
+                        isCheck.setImageResource(R.drawable.ic_check1)
+                    }
+                    imageDate.visibility = View.GONE
+                    sendImg.visibility = View.GONE
+                    liner.visibility = View.VISIBLE
+                    date.visibility = View.VISIBLE
+                    isCheck.visibility = View.VISIBLE
+                    isCheckImage.visibility = View.GONE
+                    userMsg.text = groupMessage.text
+                    date.text = groupMessage.date
+                } else if (groupMessage.imageUrl.toString().isNotEmpty()) {
+                    if (groupMessage.isChecked == true) {
+                        isCheckImage.setImageResource(R.drawable.ic_check2)
+                    } else {
+                        isCheckImage.setImageResource(R.drawable.ic_check1)
+                    }
+                    imageDate.visibility = View.VISIBLE
+                    sendImg.visibility = View.VISIBLE
+                    isCheck.visibility = View.GONE
+                    isCheckImage.visibility = View.VISIBLE
+                    liner.visibility = View.GONE
+                    date.visibility = View.GONE
+                    Glide.with(context)
+                        .load(groupMessage.imageUrl)
+                        .apply(RequestOptions().placeholder(R.drawable.profile).centerCrop())
+                        .into(sendImg)
+                    imageDate.text = groupMessage.date
                 }
-                userMsg.text = groupMessage.text
-                date.text = groupMessage.date
+            }
+            itemView.setOnClickListener {
+                onItemClickListener.invoke(groupMessage)
             }
         }
     }

@@ -119,7 +119,7 @@ class SignInFragment : Fragment() {
                             bundle.putSerializable("user", user)
                             bundle.putString("id", user.uid)
                             Navigation.findNavController(binding.root)
-                                .navigate(R.id.messageFragment, bundle)
+                                .navigate(R.id.editProfileFragment, bundle)
                         } else {
                             setNewUser(user)
                         }
@@ -143,7 +143,8 @@ class SignInFragment : Fragment() {
                 val bundle = Bundle()
                 bundle.putSerializable("user", user)
                 bundle.putString("id", user.uid)
-                Navigation.findNavController(binding.root).navigate(R.id.messageFragment, bundle)
+                Navigation.findNavController(binding.root)
+                    .navigate(R.id.editProfileFragment, bundle)
             }
     }
 

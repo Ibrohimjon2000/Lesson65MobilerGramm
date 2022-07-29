@@ -1,14 +1,21 @@
 package uz.mobiler.lesson65.fragment
 
 import android.app.AlertDialog
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.google.firebase.database.*
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import uz.mobiler.lesson65.R
 import uz.mobiler.lesson65.adapters.GroupMessageAdapter
 import uz.mobiler.lesson65.databinding.FragmentGroupChatBinding
 import uz.mobiler.lesson65.model.Group
@@ -36,10 +43,13 @@ class GroupChatFragment : Fragment() {
     private lateinit var firebaseDatabase: FirebaseDatabase
     private lateinit var reference: DatabaseReference
     private lateinit var reference1: DatabaseReference
+    private lateinit var storage: FirebaseStorage
+    private lateinit var reference2: StorageReference
     private lateinit var groupMessageAdapter: GroupMessageAdapter
     private lateinit var messageList: ArrayList<GroupMessage>
     private lateinit var uid: String
     private lateinit var account: User
+    private var imageUrl = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,6 +60,8 @@ class GroupChatFragment : Fragment() {
             firebaseDatabase = FirebaseDatabase.getInstance()
             reference = firebaseDatabase.getReference("users")
             reference1 = firebaseDatabase.getReference("groups")
+            storage = FirebaseStorage.getInstance()
+            reference2 = storage.getReference("photos")
             if (param2 != null) {
                 uid = param2?.uid!!
                 account = param2!!
@@ -77,7 +89,21 @@ class GroupChatFragment : Fragment() {
                 binding.lottie.visibility = View.VISIBLE
             }
             groupMessageAdapter =
-                GroupMessageAdapter(requireContext(), messageList, account, param1)
+                GroupMessageAdapter(requireContext(), messageList, account, param1) { message ->
+                    if (message.text.toString().isNotEmpty()) {
+                        val clipboard = ContextCompat.getSystemService(
+                            requireContext(),
+                            ClipboardManager::class.java
+                        ) as ClipboardManager
+                        val clip = ClipData.newPlainText("label", message.text)
+                        clipboard.setPrimaryClip(clip)
+                        Toast.makeText(requireContext(), "copy text", Toast.LENGTH_SHORT).show()
+                    } else if (message.imageUrl.toString().isNotEmpty()) {
+                        val bundle = Bundle()
+                        bundle.putString("img", message.imageUrl)
+                        Navigation.findNavController(root).navigate(R.id.imageFragment, bundle)
+                    }
+                }
             rv.adapter = groupMessageAdapter
 
             sendBtn.setOnClickListener {
@@ -85,7 +111,7 @@ class GroupChatFragment : Fragment() {
                     val text = edtMsg.text.toString()
                     val key = reference.push().key
                     val message =
-                        GroupMessage(text, account, getDate(), false, key)
+                        GroupMessage(text, account, getDate(), false, key, imageUrl)
                     reference1.child(param1?.groupKey ?: "").child("message")
                         .child(key ?: "").setValue(message)
                     edtMsg.setText("")
@@ -96,6 +122,10 @@ class GroupChatFragment : Fragment() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
+            }
+
+            sendProfile.setOnClickListener {
+                launcher.launch("image/*")
             }
 
             reference1.child(param1?.groupKey ?: "").child("message")
@@ -123,6 +153,29 @@ class GroupChatFragment : Fragment() {
                 })
         }
         return binding.root
+    }
+
+    private val launcher = registerForActivityResult(ActivityResultContracts.GetContent()) {
+        if (it == null) return@registerForActivityResult
+        reference2
+            .child("${System.currentTimeMillis()}.png")
+            .putFile(it)
+            .addOnSuccessListener {
+                it.metadata?.reference?.downloadUrl?.addOnSuccessListener { uri ->
+                    imageUrl = uri.toString()
+                    val key = reference.push().key
+                    val message =
+                        GroupMessage("", account, getDate(), false, key, imageUrl)
+                    reference1.child(param1?.groupKey ?: "").child("message")
+                        .child(key ?: "").setValue(message)
+                    imageUrl = ""
+                    Toast.makeText(requireContext(), "Image uploaded", Toast.LENGTH_SHORT).show()
+                }
+            }.addOnFailureListener {
+                Toast.makeText(
+                    requireContext(), it.message, Toast.LENGTH_SHORT
+                ).show()
+            }
     }
 
     companion object {

@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/drawable-v24/button_background.xml" value="0.1505" />
+        <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/drawable-v24/edit_text_background.xml" value="0.1505" />
+        <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/drawable-v24/ic_plus.xml" value="0.1505" />
         <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/drawable-v24/tab_selector.xml" value="0.1505" />
         <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/drawable/add_background.xml" value="0.1505" />
         <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/drawable/circle.xml" value="0.1505" />
@@ -11,12 +14,15 @@
         <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/drawable/from_background.xml" value="0.1505" />
         <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.1505" />
         <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/drawable/ic_baseline_arrow_back_ios_new_24.xml" value="0.1505" />
+        <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/drawable/ic_baseline_attach_file_24.xml" value="0.1505" />
+        <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/drawable/ic_baseline_edit_24.xml" value="0.1505" />
         <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/drawable/ic_baseline_error_outline_24.xml" value="0.1505" />
         <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/drawable/ic_baseline_send_24.xml" value="0.1505" />
         <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/drawable/ic_check1.xml" value="0.1505" />
         <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/drawable/ic_check2.xml" value="0.1505" />
         <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/drawable/ic_check_black1.xml" value="0.1505" />
         <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/drawable/ic_check_black2.xml" value="0.1505" />
+        <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/drawable/ic_file.xml" value="0.1505" />
         <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/drawable/ic_group.xml" value="0.1505" />
         <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/drawable/light_theme_google_icon_selector.xml" value="0.1505" />
         <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/drawable/ofline.xml" value="0.1505" />
@@ -32,15 +38,17 @@
         <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/layout/custom_tab.xml" value="0.2" />
         <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/layout/empty.xml" value="0.19895833333333332" />
         <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/layout/fragment_chat.xml" value="0.25" />
+        <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/layout/fragment_edit_profile.xml" value="0.2" />
         <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/layout/fragment_group_chat.xml" value="0.25" />
+        <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/layout/fragment_image.xml" value="0.2" />
         <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/layout/fragment_message.xml" value="0.22" />
         <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/layout/fragment_message_view_pager.xml" value="0.22" />
         <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/layout/fragment_sign_in.xml" value="0.2" />
-        <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/layout/item_from.xml" value="0.5" />
+        <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/layout/item_from.xml" value="0.25" />
         <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/layout/item_group.xml" value="0.25" />
-        <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/layout/item_to.xml" value="0.5" />
+        <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/layout/item_to.xml" value="0.33" />
         <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/layout/item_to_chat.xml" value="0.33" />
-        <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/layout/item_user.xml" value="0.25" />
+        <entry key="..\:/Mobiller/AndroidStudioProjects/Lesson65/app/src/main/res/layout/item_user.xml" value="0.33" />
       </map>
     </option>
   </component>
