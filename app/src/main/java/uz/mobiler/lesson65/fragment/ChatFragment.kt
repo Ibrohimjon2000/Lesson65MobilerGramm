@@ -164,6 +164,7 @@ class ChatFragment : Fragment() {
     }
 
     private val launcher = registerForActivityResult(ActivityResultContracts.GetContent()) {
+        Toast.makeText(requireContext(), "Loading...", Toast.LENGTH_SHORT).show()
         if (it == null) return@registerForActivityResult
         reference1
             .child("${System.currentTimeMillis()}.png")
