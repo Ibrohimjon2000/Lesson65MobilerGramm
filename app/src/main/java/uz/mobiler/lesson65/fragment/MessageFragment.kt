@@ -73,6 +73,23 @@ class MessageFragment : Fragment() {
                 Navigation.findNavController(root).popBackStack()
                 Navigation.findNavController(root).popBackStack()
             }
+
+//            reference.addListenerForSingleValueEvent(object : ValueEventListener {
+//                override fun onDataChange(snapshot: DataSnapshot) {
+//                    val children = snapshot.children
+//                    children.forEach {
+//                        val value = it.getValue(User::class.java)
+//                        if (value != null && param1?.uid == value.uid) {
+//                            name.text = value.displayName
+//                        }
+//                    }
+//                }
+//
+//                override fun onCancelled(error: DatabaseError) {
+//
+//                }
+//            })
+
             name.text = param1?.displayName
 
             Glide.with(requireContext())

@@ -76,7 +76,8 @@ class EditProfileFragment : Fragment() {
                         param1?.uid,
                         email.text.toString(),
                         imageUrl,
-                        param1?.isOnline
+                        param1?.isOnline,
+                        param1?.token
                     )
                     val bundle = Bundle()
                     bundle.putSerializable("user", user)

@@ -14,11 +14,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import uz.mobiler.lesson65.R
 import uz.mobiler.lesson65.databinding.FragmentSignInBinding
 import uz.mobiler.lesson65.model.User
@@ -46,6 +48,7 @@ class SignInFragment : Fragment() {
     private lateinit var gso: GoogleSignInOptions
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var auth: FirebaseAuth
+    private var token: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,6 +71,22 @@ class SignInFragment : Fragment() {
                 val intent = mGoogleSignInClient.signInIntent
                 startActivityForResult(intent, 1)
             }
+
+            FirebaseMessaging.getInstance().token.addOnCompleteListener(
+                OnCompleteListener { task ->
+                    if (!task.isSuccessful) {
+                        Log.w(
+                            TAG,
+                            "Fetching FCM registration token failed",
+                            task.exception
+                        )
+                        return@OnCompleteListener
+                    }
+
+                    val token = task.result
+                    this@SignInFragment.token = token
+                    Log.d(TAG, "onDataChange: $token")
+                })
         }
         return binding.root
     }
@@ -101,7 +120,8 @@ class SignInFragment : Fragment() {
                 account?.id,
                 account?.email,
                 account?.photoUrl.toString(),
-                true
+                true,
+                token
             )
             reference
                 .addListenerForSingleValueEvent(object : ValueEventListener {
@@ -157,7 +177,8 @@ class SignInFragment : Fragment() {
                 lastSignedInAccount.id,
                 lastSignedInAccount.email,
                 lastSignedInAccount.photoUrl.toString(),
-                true
+                true,
+                lastSignedInAccount.idToken.toString()
             )
             val bundle = Bundle()
             bundle.putSerializable("user", user)

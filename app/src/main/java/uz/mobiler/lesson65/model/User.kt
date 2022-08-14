@@ -8,6 +8,7 @@ class User : Serializable {
     var email: String? = null
     var photoUrl: String? = null
     var isOnline: Boolean? = null
+    var token:String?=null
 
     constructor()
 
@@ -16,16 +17,18 @@ class User : Serializable {
         uid: String?,
         email: String?,
         photoUrl: String?,
-        isOnline: Boolean?
+        isOnline: Boolean?,
+        token: String?
     ) {
         this.displayName = displayName
         this.uid = uid
         this.email = email
         this.photoUrl = photoUrl
         this.isOnline = isOnline
+        this.token = token
     }
 
     override fun toString(): String {
-        return "User(displayName=$displayName, uid=$uid, email=$email, photoUrl=$photoUrl, isOnline=$isOnline)"
+        return "User(displayName=$displayName, uid=$uid, email=$email, photoUrl=$photoUrl, isOnline=$isOnline, token=$token)"
     }
 }

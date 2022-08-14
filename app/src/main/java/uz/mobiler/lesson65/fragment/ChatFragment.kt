@@ -16,11 +16,15 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import uz.mobiler.lesson65.R
 import uz.mobiler.lesson65.adapters.MessageAdapter
 import uz.mobiler.lesson65.databinding.FragmentChatBinding
-import uz.mobiler.lesson65.model.Message
-import uz.mobiler.lesson65.model.User
+import uz.mobiler.lesson65.model.*
+import uz.mobiler.lesson65.networking.ApiClient
+import uz.mobiler.lesson65.networking.ApiService
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -93,11 +97,40 @@ class ChatFragment : Fragment() {
                     val text = edtMsg.text.toString()
                     val key = reference.push().key
                     val message = Message(text, param1?.uid, uid, getDate(), false, key, imageUrl)
-                    reference.child(param1?.uid ?: "").child("message").child(uid)
-                        .child(key ?: "").setValue(message)
-                    reference.child(uid).child("message").child(param1?.uid ?: "")
-                        .child(key ?: "").setValue(message)
-                    edtMsg.setText("")
+
+                    val notificationData = NotificationData(
+                        Data(
+                            text,
+                            "key1",
+                            "key2",
+                            account.displayName.toString()
+                        ), user.token.toString()
+                    )
+
+                    ApiClient.getRetrofit().create(ApiService::class.java)
+                        .sendMessage(notificationData)
+                        .enqueue(object : Callback<NotificationResponse> {
+                            override fun onResponse(
+                                call: Call<NotificationResponse>,
+                                response: Response<NotificationResponse>
+                            ) {
+                                if (response.isSuccessful) {
+                                    reference.child(param1?.uid ?: "").child("message").child(uid)
+                                        .child(key ?: "").setValue(message)
+                                    reference.child(uid).child("message").child(param1?.uid ?: "")
+                                        .child(key ?: "").setValue(message)
+                                    edtMsg.setText("")
+                                }
+                            }
+
+                            override fun onFailure(
+                                call: Call<NotificationResponse>,
+                                t: Throwable
+                            ) {
+
+                            }
+                        })
+
                 } else {
                     Toast.makeText(
                         requireContext(),
@@ -174,12 +207,44 @@ class ChatFragment : Fragment() {
                     imageUrl = uri.toString()
                     val key = reference.push().key
                     val message = Message("", param1?.uid, uid, getDate(), false, key, imageUrl)
-                    reference.child(param1?.uid ?: "").child("message").child(uid)
-                        .child(key ?: "").setValue(message)
-                    reference.child(uid).child("message").child(param1?.uid ?: "")
-                        .child(key ?: "").setValue(message)
-                    imageUrl = ""
-                    Toast.makeText(requireContext(), "Image uploaded", Toast.LENGTH_SHORT).show()
+
+                    val notificationData = NotificationData(
+                        Data(
+                            "Photo",
+                            "key1",
+                            "key2",
+                            account.displayName.toString()
+                        ), user.token.toString()
+                    )
+
+                    ApiClient.getRetrofit().create(ApiService::class.java)
+                        .sendMessage(notificationData)
+                        .enqueue(object : Callback<NotificationResponse> {
+                            override fun onResponse(
+                                call: Call<NotificationResponse>,
+                                response: Response<NotificationResponse>
+                            ) {
+                                if (response.isSuccessful) {
+                                    reference.child(param1?.uid ?: "").child("message").child(uid)
+                                        .child(key ?: "").setValue(message)
+                                    reference.child(uid).child("message").child(param1?.uid ?: "")
+                                        .child(key ?: "").setValue(message)
+                                    imageUrl = ""
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "Image uploaded",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            }
+
+                            override fun onFailure(
+                                call: Call<NotificationResponse>,
+                                t: Throwable
+                            ) {
+
+                            }
+                        })
                 }
             }.addOnFailureListener {
                 Toast.makeText(

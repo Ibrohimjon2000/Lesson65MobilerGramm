@@ -15,12 +15,15 @@ import androidx.navigation.Navigation
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import uz.mobiler.lesson65.R
 import uz.mobiler.lesson65.adapters.GroupMessageAdapter
 import uz.mobiler.lesson65.databinding.FragmentGroupChatBinding
-import uz.mobiler.lesson65.model.Group
-import uz.mobiler.lesson65.model.GroupMessage
-import uz.mobiler.lesson65.model.User
+import uz.mobiler.lesson65.model.*
+import uz.mobiler.lesson65.networking.ApiClient
+import uz.mobiler.lesson65.networking.ApiService
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -47,6 +50,7 @@ class GroupChatFragment : Fragment() {
     private lateinit var reference2: StorageReference
     private lateinit var groupMessageAdapter: GroupMessageAdapter
     private lateinit var messageList: ArrayList<GroupMessage>
+    private lateinit var userList: ArrayList<User>
     private lateinit var uid: String
     private lateinit var account: User
     private var imageUrl = ""
@@ -83,6 +87,7 @@ class GroupChatFragment : Fragment() {
                 Navigation.findNavController(root).popBackStack()
             }
             messageList = ArrayList()
+            userList = ArrayList()
             if (messageList.isNotEmpty()) {
                 binding.lottie.visibility = View.INVISIBLE
             } else {
@@ -110,11 +115,46 @@ class GroupChatFragment : Fragment() {
                 if (edtMsg.text.toString().isNotEmpty()) {
                     val text = edtMsg.text.toString()
                     val key = reference.push().key
-                    val message =
-                        GroupMessage(text, account, getDate(), false, key, imageUrl)
-                    reference1.child(param1?.groupKey ?: "").child("message")
-                        .child(key ?: "").setValue(message)
-                    edtMsg.setText("")
+                    val message = GroupMessage(text, account, getDate(), false, key, imageUrl)
+                    if (userList.isNotEmpty()) {
+                        userList.forEach { user ->
+                            val notificationData = NotificationData(
+                                Data(
+                                    text,
+                                    "key1",
+                                    "key2",
+                                    param1?.groupName + ": " + account.displayName.toString()
+                                ), user.token.toString()
+                            )
+
+                            ApiClient.getRetrofit().create(ApiService::class.java)
+                                .sendMessage(notificationData)
+                                .enqueue(object : Callback<NotificationResponse> {
+                                    override fun onResponse(
+                                        call: Call<NotificationResponse>,
+                                        response: Response<NotificationResponse>
+                                    ) {
+                                        if (response.isSuccessful) {
+                                            reference1.child(param1?.groupKey ?: "")
+                                                .child("message")
+                                                .child(key ?: "").setValue(message)
+                                            edtMsg.setText("")
+                                        }
+                                    }
+
+                                    override fun onFailure(
+                                        call: Call<NotificationResponse>,
+                                        t: Throwable
+                                    ) {
+
+                                    }
+                                })
+                        }
+                    } else {
+                        reference1.child(param1?.groupKey ?: "").child("message")
+                            .child(key ?: "").setValue(message)
+                        edtMsg.setText("")
+                    }
                 } else {
                     Toast.makeText(
                         requireContext(),
@@ -127,6 +167,23 @@ class GroupChatFragment : Fragment() {
             sendProfile.setOnClickListener {
                 launcher.launch("image/*")
             }
+
+            reference.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    userList.clear()
+                    val children = snapshot.children
+                    children.forEach {
+                        val value = it.getValue(User::class.java)
+                        if (value != null && uid != value.uid) {
+                            userList.add(value)
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+
+                }
+            })
 
             reference1.child(param1?.groupKey ?: "").child("message")
                 .addValueEventListener(object : ValueEventListener {
@@ -156,6 +213,7 @@ class GroupChatFragment : Fragment() {
     }
 
     private val launcher = registerForActivityResult(ActivityResultContracts.GetContent()) {
+        Toast.makeText(requireContext(), "Loading...", Toast.LENGTH_SHORT).show()
         if (it == null) return@registerForActivityResult
         reference2
             .child("${System.currentTimeMillis()}.png")
@@ -164,12 +222,57 @@ class GroupChatFragment : Fragment() {
                 it.metadata?.reference?.downloadUrl?.addOnSuccessListener { uri ->
                     imageUrl = uri.toString()
                     val key = reference.push().key
-                    val message =
-                        GroupMessage("", account, getDate(), false, key, imageUrl)
-                    reference1.child(param1?.groupKey ?: "").child("message")
-                        .child(key ?: "").setValue(message)
-                    imageUrl = ""
-                    Toast.makeText(requireContext(), "Image uploaded", Toast.LENGTH_SHORT).show()
+                    val message = GroupMessage("", account, getDate(), false, key, imageUrl)
+                    if (userList.isNotEmpty()) {
+                        userList.forEach { user ->
+                            val notificationData = NotificationData(
+                                Data(
+                                    "Photo",
+                                    "key1",
+                                    "key2",
+                                    param1?.groupName + ": " + account.displayName.toString()
+                                ), user.token.toString()
+                            )
+
+                            ApiClient.getRetrofit().create(ApiService::class.java)
+                                .sendMessage(notificationData)
+                                .enqueue(object : Callback<NotificationResponse> {
+                                    override fun onResponse(
+                                        call: Call<NotificationResponse>,
+                                        response: Response<NotificationResponse>
+                                    ) {
+                                        if (response.isSuccessful) {
+                                            reference1.child(param1?.groupKey ?: "")
+                                                .child("message")
+                                                .child(key ?: "").setValue(message)
+                                            imageUrl = ""
+                                            Toast.makeText(
+                                                requireContext(),
+                                                "Image uploaded",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
+                                    }
+
+                                    override fun onFailure(
+                                        call: Call<NotificationResponse>,
+                                        t: Throwable
+                                    ) {
+
+                                    }
+                                })
+                        }
+                    } else {
+                        reference1.child(param1?.groupKey ?: "")
+                            .child("message")
+                            .child(key ?: "").setValue(message)
+                        imageUrl = ""
+                        Toast.makeText(
+                            requireContext(),
+                            "Image uploaded",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             }.addOnFailureListener {
                 Toast.makeText(
